@@ -1,40 +1,135 @@
-# GL Helper Documentation
-Webgl2 helper made by Nicholas Drew Thompson
+# GL Helper
 
-Version: 1.1.0
+**GL Helper** is a lightweight utility designed to simplify rendering triangles using WebGL2. It provides an intuitive API for creating and managing WebGL2 canvases, geometries, textures, and objects.
 
-Setup:
+## Features
+
+- Easy-to-use WebGL2 canvas setup.
+- Support for custom vertex and fragment shaders.
+- Simplified geometry and texture management.
+- Built-in fallback mechanisms for textures.
+- Optimized for rendering triangles.
+
+## Installation
+
+You can use GL Helper via npm or a CDN.
+
+### Using npm
+
+Install the package via npm:
+
+```bash
+npm install glhelper
+```
+
+### Using a CDN
+
+Include GL Helper in your project using a CDN:
+
+- **jsDelivr**:
+  ```html
+  <script src="https://cdn.jsdelivr.net/npm/glhelper/dist/glhelper.js"></script>
+  ```
+
+- **unpkg**:
+  ```html
+  <script src="https://unpkg.com/glhelper/dist/glhelper.js"></script>
+  ```
+
+The library will be available globally as `GLH`.
+
+## Usage
+
+### Using a CDN in HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GL Helper Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/glhelper/dist/glhelper.js"></script>
+</head>
+<body>
+    <script>
+        // Create a WebGL2 canvas
+        const canvas = new GLH.Canvas(window.innerWidth, window.innerHeight);
+
+        // Define geometry (vertices and texture coordinates)
+        const geometry = new GLH.Geometry(
+            [50, 50, 50, 100, 100, 100, 50, 50, 100, 50, 50, 100], // Vertices
+            [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1]                  // Texture mapping
+        );
+
+        // Define texture with fallback color
+        const texture = new GLH.Texture({
+            texture: "./myfolder/myfile.png",
+            color: [255, 0, 0, 1],
+            lowTexture: false
+        });
+
+        // Create an object and add it to the canvas
+        const object = new GLH.Object(geometry, texture);
+        canvas.add(object);
+
+        // Render loop
+        function render() {
+            canvas.render();
+            requestAnimationFrame(render);
+        }
+        render();
+    </script>
+</body>
+</html>
+```
+
+### Using npm with ES Modules
+
 ```javascript
-import * as GLH from "glHelper";
+import * as GLH from "glhelper";
 
-const canvas = new GLH.Canvas(window.screen.width, window.screen.height);
+// Create a WebGL2 canvas
+const canvas = new GLH.Canvas(window.innerWidth, window.innerHeight);
 
-const geometry = new GLH.Geometry([ // Vertices
-        50, 50, 50, 100, 100, 100, // Triangle1 screen-space
-        50, 50, 100, 50, 50, 100 // Triangle2 screen-space
-    ], [ // Texture mapping
-        0, 0, 0, 1, 1, 1, // Triangle1  clip-space
-        0, 0, 1, 0, 0, 1 // Triangle2  clip-space
-]);
+// Define geometry (vertices and texture coordinates)
+const geometry = new GLH.Geometry(
+    [50, 50, 50, 100, 100, 100, 50, 50, 100, 50, 50, 100], // Vertices
+    [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1]                  // Texture mapping
+);
 
+// Define texture with fallback color
 const texture = new GLH.Texture({
-    texture: "./myfolder/myfile.png", // Link to texture | default: color
-    color: [255, 0, 0, 1], // Fallback color | default: transparent
-    lowTexture: false // true: small image | false (default): normal/large image
+    texture: "./myfolder/myfile.png",
+    color: [255, 0, 0, 1],
+    lowTexture: false
 });
 
+// Create an object and add it to the canvas
 const object = new GLH.Object(geometry, texture);
 canvas.add(object);
 
+// Render loop
 function render() {
-    canvas.render(); // render webgl2 canvas
+    canvas.render();
     requestAnimationFrame(render);
 }
 render();
 ```
 
-glHelper is a tool to make rendering with triangles an easy task.
+## Future Enhancements
 
-Later updates may include vertex and fragment shader source control, more texturing options, and/or easier to use geometries.
+Planned updates for GL Helper include:
 
-Install with `npm install glhelper`
+- **Post-Processing Effects**: Introduce effects like bloom, blur, or color grading.
+- **Customizable Render Pipelines**: Allow users to define custom render pipelines for advanced use cases.
+- **Geometry Utilities**: Add helper functions for generating common shapes like circles, grids, or polygons.
+- **Texture Atlas Support**: Enable efficient rendering of multiple textures using a single texture atlas.
+- **Performance Monitoring**: Provide tools to measure and optimize WebGL2 rendering performance.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+For more information, please refer to the source code or documentation.
