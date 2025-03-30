@@ -1,9 +1,10 @@
 {
   "name": "glhelper",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "Tool to make rendering triangles with webgl2 easy",
   "main": "glhelper.js",
   "types": "dist/glhelper.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

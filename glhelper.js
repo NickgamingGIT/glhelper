@@ -90,7 +90,7 @@ export class Canvas {
 }
 
 export class Geometry {
-    constructor(vertices, texCoords) {
+    constructor(vertices, texCoords = null) {
         this.vertices = vertices;
         this.texCoords = texCoords;
         this.vertexBuffer = null;
@@ -102,9 +102,11 @@ export class Geometry {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.DYNAMIC_DRAW);
 
-        this.texCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texCoords), gl.DYNAMIC_DRAW);
+        if (this.texCoords) {
+            this.texCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.texCoords), gl.DYNAMIC_DRAW);
+        }
     }
 
     updateBuffer(gl) {
@@ -118,10 +120,12 @@ export class Geometry {
         gl.enableVertexAttribArray(positionLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-        const texCoordLocation = gl.getAttribLocation(program, 'texCoord');
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
-        gl.enableVertexAttribArray(texCoordLocation);
-        gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+        if (this.texCoords) {
+            const texCoordLocation = gl.getAttribLocation(program, 'texCoord');
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
+            gl.enableVertexAttribArray(texCoordLocation);
+            gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+        }
     }
 }
 
@@ -193,6 +197,14 @@ export class Object {
     constructor(geometry, texture) {
         this.geometry = geometry;
         this.texture = texture;
+    }
+
+    scaleBy(scale) {
+        this.geometry.vertices = this.geometry.vertices.map(v => v * scale);
+    }
+
+    translate(x, y) {
+        this.geometry.vertices = this.geometry.vertices.map((v, i) => i % 2 === 0 ? v + x : v + y);
     }
 
     initialize(gl) {

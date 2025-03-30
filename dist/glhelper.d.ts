@@ -12,7 +12,7 @@ declare module "glhelper" {
     }
 
     export class Geometry {
-        constructor(vertices: number[], texCoords: number[]);
+        constructor(vertices: number[], texCoords?: number[]);
 
         initialize(gl: WebGLRenderingContext): void;
         updateBuffer(gl: WebGLRenderingContext): void;
@@ -33,6 +33,8 @@ declare module "glhelper" {
     export class Object {
         constructor(geometry: Geometry, texture: Texture);
 
+        scaleBy(scale: number): void;
+        translate(x: number, y: number): void;
         initialize(gl: WebGLRenderingContext): void;
         draw(gl: WebGLRenderingContext, program: WebGLProgram): void;
     }
