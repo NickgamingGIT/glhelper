@@ -1,5 +1,5 @@
 export class Canvas {
-    constructor(width, height) {
+    constructor(width, height, vertexSource = null, fragmentSource = null) {
         this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;
@@ -16,7 +16,8 @@ export class Canvas {
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 
-        this.vertexSource = `
+        // Allow users to provide custom shaders or use default ones
+        this.vertexSource = vertexSource || `
             attribute vec2 position;
             attribute vec2 texCoord;
             uniform vec2 resolution;
@@ -27,7 +28,7 @@ export class Canvas {
                 v_texCoord = texCoord;
             }
         `;
-        this.fragmentSource = `
+        this.fragmentSource = fragmentSource || `
             precision mediump float;
             varying vec2 v_texCoord;
             uniform sampler2D u_texture;
@@ -81,12 +82,9 @@ export class Canvas {
         this.objects.push(object);
     }
 
-    clear() {
+    render() {
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    }
-
-    draw() {
         this.objects.forEach(object => object.draw(this.gl, this.program));
     }
 }
@@ -197,7 +195,7 @@ export class Object {
         this.texture = texture;
     }
 
-    initialize(gl, program) {
+    initialize(gl) {
         this.geometry.initialize(gl);
         this.texture.initialize(gl);
     }

@@ -1,7 +1,7 @@
 # GL Helper Documentation
 Webgl2 helper made by Nicholas Drew Thompson
 
-Version: 1.0.0
+Version: 1.1.0
 
 Setup:
 ```javascript
@@ -27,8 +27,7 @@ const object = new GLH.Object(geometry, texture);
 canvas.add(object);
 
 function render() {
-    canvas.clear(); // clear webgl2 canvas
-    canvas.draw(); // draw all connected objects
+    canvas.render(); // render webgl2 canvas
     requestAnimationFrame(render);
 }
 render();
