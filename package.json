@@ -1,6 +1,6 @@
 {
   "name": "glhelper",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Tool to make rendering triangles with webgl2 easy",
   "main": "glhelper.js",
   "scripts": {
